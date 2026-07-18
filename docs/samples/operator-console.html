@@ -1,0 +1,68 @@
+<html><head><meta charset="utf-8"><title>cloud-itonami-isic-861 &middot; hospital activities coordination</title><style>
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.ok { color: #137a3f; }
+body { font-family: system-ui,-apple-system,sans-serif; margin: 0; color: #1a1a1a; background: #fafafa; }
+header.bar { display: flex; align-items: center; gap: 12px; padding: 12px 20px; background: #fff; border-bottom: 1px solid #e5e5e5; }
+th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid #f0f0f0; }
+h2 { margin-top: 0; font-size: 15px; }
+.warn { color: #b25c00; background: #fff8e1; padding: 2px 6px; border-radius: 4px; }
+main { max-width: 980px; margin: 24px auto; padding: 0 20px; }
+header.bar h1 { font-size: 18px; margin: 0; font-weight: 600; }
+.muted { color: #888; font-size: 13px; }
+.critical { color: #fff; background: #b3261e; padding: 2px 6px; border-radius: 4px; font-weight: 600; }
+.card { background: #fff; border: 1px solid #e5e5e5; border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+.err { color: #b3261e; background: #fbe9e7; padding: 2px 6px; border-radius: 4px; }
+th { font-weight: 600; color: #555; font-size: 12px; text-transform: uppercase; letter-spacing: 0.04em; }
+header.bar .badge { margin-left: auto; font-size: 12px; color: #666; }
+code { font-size: 12px; background: #f4f4f4; padding: 1px 4px; border-radius: 3px; }
+</style></head><body>
+<header class="bar">
+  <h1>Hospital activities administrative coordination (ISIC 861) — Operator Console</h1>
+  <span class="badge">read-only sample · governor-gated · never touches diagnosis/treatment/medication/patient-care</span>
+</header>
+<main>
+  <section class="card">
+    <h2>Beds</h2>
+    <p class="muted">Demo snapshot — build-time-generated from <code>hospitalops.store</code> via <code>hospitalops.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly.</p>
+    <table>
+      <thead><tr><th>Bed</th><th>Location</th><th>Facility-resource status</th><th>Last coordination status</th></tr></thead>
+      <tbody>
+        <tr><td>bed-101</td><td>Ward A, Room 101</td><td><span class="ok">registered &amp; verified</span></td><td><span class="critical">HARD hold &middot; scope-excluded</span></td></tr>
+        <tr><td>bed-102</td><td>Ward A, Room 102</td><td><span class="ok">registered &amp; verified</span></td><td><span class="critical">HARD hold &middot; effect-not-propose</span></td></tr>
+        <tr><td>bed-201</td><td>Ward B, Room 201, in intake</td><td><span class="warn">registered, unverified</span></td><td><span class="critical">HARD hold &middot; unverified bed</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Action gate (Hospital Governor)</h2>
+    <p class="muted">HARD holds cannot be overridden by a human approver. Diagnosis, treatment, medication, clinical procedures, patient assessment, triage/discharge and clinical-authority territory are permanently out of scope — see governor scope-exclusion.</p>
+    <table>
+      <thead><tr><th>Op</th><th>Gate</th></tr></thead>
+      <tbody>
+        <tr><td><code>:coordinate-bed-assignment</code></td><td><span class="ok">phase-3 auto when clean</span></td></tr>
+        <tr><td><code>:schedule-visitor-access</code></td><td><span class="ok">phase-3 auto when clean</span></td></tr>
+        <tr><td><code>:coordinate-supply-request</code></td><td><span class="err">currently always HARD-holds &middot; advisor rationale text self-triggers the scope filter (confirmed by running the actor, see namespace docstring)</span></td></tr>
+        <tr><td><code>:schedule-staff-shift-proposal</code></td><td><span class="ok">phase-3 auto when clean</span></td></tr>
+        <tr><td><code>:flag-safety-concern</code></td><td><span class="warn">ALWAYS human approval &middot; never auto, any phase</span></td></tr>
+      </tbody>
+    </table>
+  </section>
+  <section class="card">
+    <h2>Audit ledger (this run)</h2>
+    <p class="muted">Append-only decision-fact log — every proposal, hold and commit this scenario produced.</p>
+    <table>
+      <thead><tr><th>Fact</th><th>Op</th><th>Bed</th><th>Basis</th></tr></thead>
+      <tbody>
+        <tr><td>committed</td><td><code>coordinate-bed-assignment</code></td><td>bed-101</td><td>bed-101</td></tr>
+        <tr><td>committed</td><td><code>schedule-visitor-access</code></td><td>bed-102</td><td>bed-102</td></tr>
+        <tr><td>committed</td><td><code>schedule-staff-shift-proposal</code></td><td>bed-102</td><td>bed-102</td></tr>
+        <tr><td>committed</td><td><code>flag-safety-concern</code></td><td>bed-101</td><td>bed-101</td></tr>
+        <tr><td>governor-hold</td><td><code>coordinate-bed-assignment</code></td><td>bed-201</td><td>bed-unverified</td></tr>
+        <tr><td>governor-hold</td><td><code>coordinate-bed-assignment</code></td><td>bed-101</td><td>scope-excluded</td></tr>
+        <tr><td>governor-hold</td><td><code>schedule-visitor-access</code></td><td>bed-102</td><td>effect-not-propose</td></tr>
+        <tr><td>governor-hold</td><td><code>coordinate-supply-request</code></td><td>bed-101</td><td>scope-excluded</td></tr>
+      </tbody>
+    </table>
+  </section>
+</main>
+</body></html>
