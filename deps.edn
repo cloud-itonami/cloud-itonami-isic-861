@@ -16,7 +16,7 @@ io.github.kotoba-lang/langgraph
          io.github.kotoba-lang/langchain
          {:local/root "../../kotoba-lang/langchain"}}}
   :run {:main-opts ["-m" "hospitalops.sim"]}
-  ;; clojure -M:dev:render-html -> build-time regeneration of
+  ;; kbb -M:dev:render-html -> build-time regeneration of
   ;; docs/samples/operator-console.html through the real actor
   ;; (ADR-2607189300 checklist item 2, flagship-wave5 rollout).
   :render-html {:main-opts ["-m" "hospitalops.render-html"]}

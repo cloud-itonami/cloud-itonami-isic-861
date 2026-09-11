@@ -12,7 +12,7 @@
   (verified by diffing two consecutive runs before shipping).
 
   NOTE for future porters of this template: this repo's OWN
-  `hospitalops.sim` demo driver (`clojure -M:dev:run`) was run directly
+  `hospitalops.sim` demo driver (`kbb -M:dev:run`) was run directly
   before writing this file, and its ids ARE trustworthy (bed-101/bed-102
   are the store's own registered+verified beds, bed-201 is registered
   but NOT verified, bed-999 is deliberately absent from the seed) --
@@ -58,7 +58,7 @@
   (`:bed-unverified`, `:scope-excluded`, `:effect-not-propose`), across
   four HARD-hold rows.
 
-  Usage: `clojure -M:dev:render-html [out-file]`
+  Usage: `kbb -M:dev:render-html [out-file]`
   (default `docs/samples/operator-console.html`)."
   (:require [jp-go-dds.skin]
             [kotoba.lang.text :as str]
@@ -241,7 +241,7 @@
      "<main>\n"
      "  <section class=\"card\">\n"
      "    <h2>Beds</h2>\n"
-     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>hospitalops.store</code> via <code>hospitalops.render-html</code> (<code>clojure -M:dev:render-html</code>), regenerated nightly.</p>\n"
+     "    <p class=\"muted\">Demo snapshot — build-time-generated from <code>hospitalops.store</code> via <code>hospitalops.render-html</code> (<code>kbb -M:dev:render-html</code>), regenerated nightly.</p>\n"
      "    <table>\n"
      "      <thead><tr><th>Bed</th><th>Location</th><th>Facility-resource status</th><th>Last coordination status</th></tr></thead>\n"
      "      <tbody>\n"

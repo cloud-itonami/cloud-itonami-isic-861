@@ -43,25 +43,25 @@ These boundaries are enforced by three HARD, permanent, un-overridable governor 
 
 Run tests:
 ```bash
-clojure -M:test
+kbb -M:test
 ```
 
 Run linter:
 ```bash
-clojure -M:lint
+kbb -M:lint
 ```
 
 Run demo:
 ```bash
-clojure -M:run
+kbb -M:run
 ```
 
 ## Development
 
 Use the `:dev` alias to override dependencies with local checkouts:
 ```bash
-clojure -M:dev:test
-clojure -M:dev:run
+kbb -M:dev:test
+kbb -M:dev:run
 ```
 
 ## License
